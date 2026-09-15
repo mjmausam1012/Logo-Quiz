@@ -130,15 +130,17 @@
   background: #94a3b8;
 }
 
-/* Custom StartScreen Typography & Effects */
+/* Custom Clean Typography */
 .font-logo-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-style: italic;
-  font-weight: 900;
+  font-family: var(--font-heading), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 800;
 }
 
 .font-cinzel {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-heading), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 800;
 }
 
 .start-text-stroke {
@@ -161,4 +163,176 @@
 
 .animate-halo-pulse {
   animation: haloPulse 2.8s ease-in-out infinite;
+}
+
+/* ================= COMPACT FLOATING KEYBOARD ================= */
+.fkb-container {
+  position: fixed;
+  z-index: 9999;
+  width: 94vw;
+  max-width: 350px;
+  background: linear-gradient(180deg, #3d0d0d 0%, #240707 100%);
+  border: 1.5px solid rgba(245, 171, 65, 0.45);
+  border-radius: 18px;
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.65), 0 0 20px rgba(245, 171, 65, 0.15);
+  padding: 8px;
+  backdrop-filter: blur(12px);
+  user-select: none;
+  touch-action: none;
+  animation: fkbFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fkbFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fkb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 6px 7px 8px;
+  cursor: grab;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 6px;
+}
+
+.fkb-header:active {
+  cursor: grabbing;
+}
+
+.fkb-header-drag-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #FCC474;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.fkb-drag-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.75;
+}
+
+.fkb-close-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #f1f5f9;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.fkb-close-btn:hover {
+  background: #f43f5e;
+  color: white;
+  transform: scale(1.1);
+}
+
+.fkb-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fkb-row {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+
+.fkb-key {
+  flex: 1;
+  min-width: 0;
+  height: 31px;
+  background: #4A1513;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+  transition: all 0.08s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.fkb-key:hover {
+  background: #681818;
+  border-color: rgba(252, 196, 116, 0.6);
+  color: #FCC474;
+}
+
+.fkb-key:active {
+  transform: translateY(1.5px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
+  background: #2b0b0b;
+}
+
+.fkb-key-num {
+  background: #330d0d;
+  color: #fef08a;
+  font-weight: 800;
+  font-size: 11.5px;
+}
+
+.fkb-key-action {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 0 5px;
+  letter-spacing: 0.02em;
+}
+
+.fkb-key-clear {
+  flex: 1.2;
+  background: #471313;
+  color: #fca5a5;
+}
+
+.fkb-key-space {
+  flex: 3.2;
+  background: #501515;
+  color: #fef5e6;
+  font-size: 11px;
+}
+
+.fkb-key-backspace {
+  flex: 1.4;
+  background: #5a1919;
+  color: #fca5a5;
+  font-size: 13px;
+}
+
+.fkb-key-done {
+  flex: 1.8;
+  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  border-color: rgba(74, 222, 128, 0.5);
+  color: #ffffff;
+  box-shadow: 0 2px 0 #14532d;
+}
+
+.fkb-key-done:hover {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
 }

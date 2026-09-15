@@ -19,6 +19,12 @@ export default function ResultScreen({
   teamScores = { team1: 0, team2: 0 },
   robotScore = 0,
   userScore = 0,
+  playerNames = {
+    team1: "Team 1",
+    team2: "Team 2",
+    player: "Player 1",
+    robot: "Robo AI",
+  },
   onPlayAgain,
   onChangeMode,
   onChangeDifficulty,
@@ -98,24 +104,26 @@ export default function ResultScreen({
             <div className="grid grid-cols-2 gap-3 mb-6">
               <div className="p-4 rounded-2xl bg-slate-50 border-2 border-black text-center flex flex-col items-center justify-center">
                 <span className="text-[11px] font-black text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  <Award className="w-3.5 h-3.5 text-black" />
-                  Final Score
+                  Total Score
                 </span>
-                <span className="text-2xl sm:text-3xl font-black text-black font-mono mt-1">
+                <span className="text-3xl sm:text-4xl font-black text-black font-mono mt-1">
                   {score.toLocaleString()}
                 </span>
-                <span className="text-[10px] text-slate-500 font-bold">Max: {maxPossibleScore} pts</span>
+                <span className="text-[10px] text-slate-500 mt-0.5">
+                  Max: {maxPossibleScore} pts
+                </span>
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-50 border-2 border-black text-center flex flex-col items-center justify-center">
                 <span className="text-[11px] font-black text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  <Zap className="w-3.5 h-3.5 text-black" />
                   Accuracy
                 </span>
-                <span className="text-2xl sm:text-3xl font-black text-black font-mono mt-1">
+                <span className="text-3xl sm:text-4xl font-black text-black font-mono mt-1">
                   {accuracy}%
                 </span>
-                <span className="text-[10px] text-slate-500 font-bold">{wrongCount} wrong answers</span>
+                <span className="text-[10px] text-slate-500 mt-0.5">
+                  {correctCount} Right • {wrongCount} Wrong
+                </span>
               </div>
             </div>
           </>
@@ -132,7 +140,11 @@ export default function ResultScreen({
                 Team vs Team Duel Over
               </span>
               <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-black mt-1">
-                {isTeam1Winner ? 'Team 1 (Blue) Wins!' : isTeam2Winner ? 'Team 2 (Red) Wins!' : 'Match Finished!'}
+                {isTeam1Winner
+                  ? `${playerNames?.team1 || 'Team 1'} Wins!`
+                  : isTeam2Winner
+                    ? `${playerNames?.team2 || 'Team 2'} Wins!`
+                    : 'Match Tied!'}
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
                 First team to achieve 10 score goal.
@@ -146,8 +158,8 @@ export default function ResultScreen({
                   isTeam1Winner ? 'bg-indigo-50/80 ring-4 ring-indigo-500/20' : 'bg-slate-50 opacity-80'
                 }`}
               >
-                <span className="text-xs font-black text-indigo-950 uppercase flex items-center gap-1">
-                  Team 1 (Blue)
+                <span className="text-xs font-black text-indigo-950 uppercase flex items-center gap-1 truncate max-w-[140px]">
+                  {playerNames?.team1 || 'Team 1'} (Blue)
                 </span>
                 <span className="text-3xl sm:text-4xl font-black text-indigo-700 font-mono mt-1">
                   {teamScores.team1}
@@ -162,8 +174,8 @@ export default function ResultScreen({
                   isTeam2Winner ? 'bg-rose-50/80 ring-4 ring-rose-500/20' : 'bg-slate-50 opacity-80'
                 }`}
               >
-                <span className="text-xs font-black text-rose-950 uppercase flex items-center gap-1">
-                  Team 2 (Red)
+                <span className="text-xs font-black text-rose-950 uppercase flex items-center gap-1 truncate max-w-[140px]">
+                  {playerNames?.team2 || 'Team 2'} (Red)
                 </span>
                 <span className="text-3xl sm:text-4xl font-black text-rose-700 font-mono mt-1">
                   {teamScores.team2}
@@ -195,12 +207,16 @@ export default function ResultScreen({
                 vs Robot Battle Over
               </span>
               <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-black mt-1">
-                {isUserWinner ? 'You Defeated The Robot!' : isRobotWinner ? 'Robot Wins The Race!' : 'Duel Completed!'}
+                {isUserWinner
+                  ? `${playerNames?.player || 'You'} Defeated ${playerNames?.robot || 'The Robot'}!`
+                  : isRobotWinner
+                    ? `${playerNames?.robot || 'Robot AI'} Wins The Race!`
+                    : 'Duel Completed!'}
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
                 {isUserWinner
                   ? 'Outstanding quick reflexes and brand recognition!'
-                  : 'The Robot AI achieved 10 points first. Try again!'}
+                  : `${playerNames?.robot || 'The Robot AI'} achieved 10 points first. Try again!`}
               </p>
             </div>
 
@@ -211,9 +227,9 @@ export default function ResultScreen({
                   isUserWinner ? 'bg-indigo-50/80 ring-4 ring-indigo-500/20' : 'bg-slate-50 opacity-80'
                 }`}
               >
-                <span className="text-xs font-black text-indigo-950 uppercase flex items-center gap-1">
+                <span className="text-xs font-black text-indigo-950 uppercase flex items-center gap-1 truncate max-w-[140px]">
                   <User className="w-3.5 h-3.5 text-indigo-600" />
-                  Your Score
+                  {playerNames?.player || 'Your'} Score
                 </span>
                 <span className="text-3xl sm:text-4xl font-black text-indigo-700 font-mono mt-1">
                   {userScore}
@@ -228,9 +244,9 @@ export default function ResultScreen({
                   isRobotWinner ? 'bg-purple-50/80 ring-4 ring-purple-500/20' : 'bg-slate-50 opacity-80'
                 }`}
               >
-                <span className="text-xs font-black text-purple-950 uppercase flex items-center gap-1">
+                <span className="text-xs font-black text-purple-950 uppercase flex items-center gap-1 truncate max-w-[140px]">
                   <Bot className="w-3.5 h-3.5 text-purple-600" />
-                  Robot Score
+                  {playerNames?.robot || 'Robot'} Score
                 </span>
                 <span className="text-3xl sm:text-4xl font-black text-purple-700 font-mono mt-1">
                   {robotScore}

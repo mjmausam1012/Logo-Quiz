@@ -12,6 +12,8 @@ import FeedbackMessage from "./components/FeedbackMessage";
 import DualTeamArena from "./components/DualTeamArena";
 import RobotDuelArena from "./components/RobotDuelArena";
 import ResultScreen from "./components/ResultScreen";
+import PlayerSetupScreen from "./components/PlayerSetupScreen";
+import TopLogoBanner from "./components/TopLogoBanner";
 import startBottomImg from "./assets/start-bottom.png";
 
 import { LOGO_QUESTIONS } from "./data/logos";
@@ -22,10 +24,16 @@ import { storage } from "./utils/storage";
 import { useTimer } from "./hooks/useTimer";
 
 export default function App() {
-  // Game Machine States: 'start' | 'difficulty' | 'mode' | 'playing' | 'result'
+  // Game Machine States: 'start' | 'difficulty' | 'mode' | 'player-setup' | 'playing' | 'result'
   const [gameStatus, setGameStatus] = useState("start");
   const [currentDifficulty, setCurrentDifficulty] = useState("easy");
   const [gameMode, setGameMode] = useState("self"); // 'self' | 'team' | 'robot'
+  const [playerNames, setPlayerNames] = useState({
+    team1: "Team 1",
+    team2: "Team 2",
+    player: "Player 1",
+    robot: "Robo AI",
+  });
 
   // Stored Records
   const [bestScore, setBestScore] = useState(() => storage.getBestScore());
@@ -206,12 +214,29 @@ export default function App() {
     setGameStatus("mode");
   }, []);
 
-  // Step 3 -> Gameplay (Mode Selection -> Playing)
+  // Step 3 -> Player Setup (for Team vs Team & vs Robot) or direct start
+  const handleSelectMode = useCallback(
+    (mode) => {
+      sound.playClick();
+      setGameMode(mode);
+      if (mode === "team" || mode === "robot") {
+        setGameStatus("player-setup");
+      } else {
+        handleStartQuiz(currentDifficulty, mode);
+      }
+    },
+    [currentDifficulty],
+  );
+
+  // Gameplay Start
   const handleStartQuiz = useCallback(
-    (difficulty = currentDifficulty, mode = gameMode) => {
+    (difficulty = currentDifficulty, mode = gameMode, customNames = null) => {
       sound.playClick();
       setCurrentDifficulty(difficulty);
       setGameMode(mode);
+      if (customNames) {
+        setPlayerNames(customNames);
+      }
 
       // In Self mode: 10 questions. In Team / Robot mode: 36 questions pool (race to 10 points)
       const questionCount = mode === "self" ? 10 : 36;
@@ -741,24 +766,30 @@ export default function App() {
       {gameStatus === "mode" && (
         <ModeScreen
           difficulty={currentDifficulty}
-          onSelectMode={(mode) => handleStartQuiz(currentDifficulty, mode)}
+          onSelectMode={handleSelectMode}
           onBack={() => setGameStatus("difficulty")}
           soundEnabled={soundEnabled}
           onToggleSound={toggleSound}
         />
       )}
 
-      {/* ================= TOP LOGO BANNER (FOR PLAYING SCREEN) ================= */}
-      {gameStatus === "playing" && (
-        <div className="w-full pointer-events-none z-10 overflow-hidden leading-none shrink-0">
-          <img
-            src={startBottomImg}
-            alt="Logo Banner Top"
-            className="w-full h-12 sm:h-16 md:h-20 lg:h-24 object-cover object-bottom select-none block"
-            style={{ transform: "scaleY(-1)" }}
-          />
-        </div>
+      {/* 3.5 PLAYER SETUP SCREEN (After Team vs Team and vs Robot) */}
+      {gameStatus === "player-setup" && (
+        <PlayerSetupScreen
+          difficulty={currentDifficulty}
+          gameMode={gameMode}
+          playerNames={playerNames}
+          onUpdatePlayerNames={setPlayerNames}
+          onStartQuiz={(diff, mode, names) => {
+            if (names) setPlayerNames(names);
+            handleStartQuiz(diff, mode, names);
+          }}
+          onBack={() => setGameStatus("mode")}
+        />
       )}
+
+      {/* ================= TOP LOGO BANNER (FOR PLAYING SCREEN) ================= */}
+      {gameStatus === "playing" && <TopLogoBanner />}
 
       {/* 4. GAMEPLAY SCREEN */}
       {gameStatus === "playing" && currentQuestion && (
@@ -774,6 +805,7 @@ export default function App() {
             teamScores={teamScores}
             userScore={userDuelScore}
             robotScore={robotDuelScore}
+            playerNames={playerNames}
             soundEnabled={soundEnabled}
             onToggleSound={toggleSound}
             onQuitToHome={handleQuitToHome}
@@ -842,6 +874,8 @@ export default function App() {
               firstResponder={firstResponder}
               team1Selected={team1Selected}
               team2Selected={team2Selected}
+              team1Name={playerNames.team1}
+              team2Name={playerNames.team2}
               isAnswered={isAnswered}
               onTeamSelectAnswer={handleTeamSelectAnswer}
               timeRemaining={timeRemaining}
@@ -857,6 +891,8 @@ export default function App() {
               userScore={userDuelScore}
               robotScore={robotDuelScore}
               robotCountdown={robotCountdown}
+              playerName={playerNames.player}
+              robotName={playerNames.robot}
               firstResponder={firstResponder}
               userSelected={userSelected}
               robotAnswer={robotAnswer}
@@ -879,6 +915,7 @@ export default function App() {
                 scoreResult={scoreResult}
                 gameMode={gameMode}
                 activeTeam={firstResponder === "team2" ? 2 : 1}
+                playerNames={playerNames}
                 firstResponder={firstResponder}
                 userSelected={userSelected}
                 robotAnswer={robotAnswer}
@@ -905,26 +942,30 @@ export default function App() {
 
       {/* 5. RESULT SCREEN DASHBOARD */}
       {gameStatus === "result" && (
-        <ResultScreen
-          score={score}
-          correctCount={correctCount}
-          wrongCount={wrongCount}
-          totalQuestions={
-            gameMode === "self" ? quizQuestions.length : currentIndex + 1
-          }
-          hintsUsedCount={totalHintsUsed}
-          bestScore={bestScore}
-          isNewBest={isNewBest}
-          difficulty={currentDifficulty}
-          gameMode={gameMode}
-          teamScores={teamScores}
-          userScore={userDuelScore}
-          robotScore={robotDuelScore}
-          onPlayAgain={() => handleStartQuiz(currentDifficulty, gameMode)}
-          onChangeMode={() => setGameStatus("mode")}
-          onChangeDifficulty={() => setGameStatus("difficulty")}
-          onBackToHome={handleQuitToHome}
-        />
+        <>
+          <TopLogoBanner />
+          <ResultScreen
+            score={score}
+            correctCount={correctCount}
+            wrongCount={wrongCount}
+            totalQuestions={
+              gameMode === "self" ? quizQuestions.length : currentIndex + 1
+            }
+            hintsUsedCount={totalHintsUsed}
+            bestScore={bestScore}
+            isNewBest={isNewBest}
+            difficulty={currentDifficulty}
+            gameMode={gameMode}
+            teamScores={teamScores}
+            userScore={userDuelScore}
+            robotScore={robotDuelScore}
+            playerNames={playerNames}
+            onPlayAgain={() => handleStartQuiz(currentDifficulty, gameMode)}
+            onChangeMode={() => setGameStatus("mode")}
+            onChangeDifficulty={() => setGameStatus("difficulty")}
+            onBackToHome={handleQuitToHome}
+          />
+        </>
       )}
     </div>
   );

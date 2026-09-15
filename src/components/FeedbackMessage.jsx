@@ -17,11 +17,20 @@ export default function FeedbackMessage({
   scoreResult = { total: 0, base: 0, timeBonus: 0, penalty: 0 },
   gameMode = "self", // 'self' | 'team' | 'robot'
   activeTeam = 1,
+  playerNames = {
+    team1: "Team 1",
+    team2: "Team 2",
+    player: "Player 1",
+    robot: "Robo AI",
+  },
   nextDisabled = false,
   onNext,
   isLastQuestion = false,
 }) {
-  const teamName = `Team ${activeTeam}`;
+  const teamName =
+    activeTeam === 2
+      ? playerNames?.team2 || "Team 2"
+      : playerNames?.team1 || "Team 1";
 
   return (
     <div className="w-full max-w-xl mx-auto mt-3 sm:mt-4 animate-pop">

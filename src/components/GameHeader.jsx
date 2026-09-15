@@ -24,6 +24,12 @@ export default function GameHeader({
   teamScores = { team1: 0, team2: 0 },
   robotScore = 0,
   userScore = 0,
+  playerNames = {
+    team1: "Team 1",
+    team2: "Team 2",
+    player: "Player 1",
+    robot: "Robo AI",
+  },
   soundEnabled = true,
   onToggleSound,
   onQuitToHome,
@@ -93,11 +99,13 @@ export default function GameHeader({
         <div className="w-full flex items-center justify-between gap-3 p-2 rounded-2xl bg-white border-2 border-[#4A1513] shadow-xs">
           {/* Team 1 Score */}
           <div className="flex-1 flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-black">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-indigo-600" />
-              <span className="text-xs font-black">Team 1 (Blue)</span>
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-indigo-600 shrink-0" />
+              <span className="text-xs font-black truncate max-w-[130px]">
+                {playerNames?.team1 || "Team 1"}
+              </span>
             </div>
-            <span className="font-mono font-black text-sm text-black">
+            <span className="font-mono font-black text-sm text-black shrink-0 ml-1">
               {teamScores.team1}{" "}
               <span className="text-xs text-slate-400 font-normal">/ 10</span>
             </span>
@@ -109,11 +117,13 @@ export default function GameHeader({
 
           {/* Team 2 Score */}
           <div className="flex-1 flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-black">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-600" />
-              <span className="text-xs font-black">Team 2 (Red)</span>
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-600 shrink-0" />
+              <span className="text-xs font-black truncate max-w-[130px]">
+                {playerNames?.team2 || "Team 2"}
+              </span>
             </div>
-            <span className="font-mono font-black text-sm text-black">
+            <span className="font-mono font-black text-sm text-black shrink-0 ml-1">
               {teamScores.team2}{" "}
               <span className="text-xs text-slate-400 font-normal">/ 10</span>
             </span>
@@ -125,28 +135,32 @@ export default function GameHeader({
         <div className="w-full flex items-center justify-between gap-3 p-2 rounded-2xl bg-white border-2 border-[#4A1513] shadow-xs">
           {/* User Score */}
           <div className="flex-1 flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-black">
-            <div className="flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-black" />
-              <span className="text-xs font-black">You</span>
+            <div className="flex items-center gap-1.5 min-w-0">
+              <User className="w-3.5 h-3.5 text-black shrink-0" />
+              <span className="text-xs font-black truncate max-w-[130px]">
+                {playerNames?.player || "You"}
+              </span>
             </div>
-            <span className="font-mono font-black text-sm text-black">
+            <span className="font-mono font-black text-sm text-black shrink-0 ml-1">
               {userScore}{" "}
               <span className="text-xs text-slate-400 font-normal">/ 10</span>
             </span>
           </div>
 
-          <div className="text-[10px] font-black text-[#4A1513] uppercase tracking-wider px-2 flex items-center gap-1">
+          <div className="text-[10px] font-black text-[#4A1513] uppercase tracking-wider px-2 flex items-center gap-1 shrink-0">
             <Zap className="w-3 h-3 fill-[#4A1513] text-[#4A1513]" />
             Race to 10
           </div>
 
           {/* Robot Score */}
           <div className="flex-1 flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-black">
-            <div className="flex items-center gap-1.5">
-              <Bot className="w-3.5 h-3.5 text-black" />
-              <span className="text-xs font-black">Robot</span>
+            <div className="flex items-center gap-1.5 min-w-0">
+              <Bot className="w-3.5 h-3.5 text-purple-700 shrink-0" />
+              <span className="text-xs font-black truncate max-w-[130px]">
+                {playerNames?.robot || "Robo AI"}
+              </span>
             </div>
-            <span className="font-mono font-black text-sm text-black">
+            <span className="font-mono font-black text-sm text-black shrink-0 ml-1">
               {robotScore}{" "}
               <span className="text-xs text-slate-400 font-normal">/ 10</span>
             </span>

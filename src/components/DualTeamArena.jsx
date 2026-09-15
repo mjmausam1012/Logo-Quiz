@@ -9,6 +9,8 @@ export default function DualTeamArena({
   firstResponder = null, // null | 'team1' | 'team2'
   team1Selected = null,
   team2Selected = null,
+  team1Name = "Team 1",
+  team2Name = "Team 2",
   isAnswered = false,
   onTeamSelectAnswer,
   timeRemaining = 15,
@@ -37,7 +39,7 @@ export default function DualTeamArena({
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-full bg-indigo-600 animate-ping" />
           <span className="text-xs font-black tracking-wider uppercase">
-            Team 1:{" "}
+            {team1Name}:{" "}
             <strong className="font-mono text-sm">{teamScores.team1}</strong> /
             10
           </span>
@@ -53,7 +55,7 @@ export default function DualTeamArena({
 
         <div className="flex items-center gap-2">
           <span className="text-xs font-black tracking-wider uppercase">
-            Team 2:{" "}
+            {team2Name}:{" "}
             <strong className="font-mono text-sm">{teamScores.team2}</strong> /
             10
           </span>
@@ -83,8 +85,8 @@ export default function DualTeamArena({
                   T1
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-black">
-                    Team 1 (Blue Window)
+                  <h3 className="text-sm font-black text-black truncate max-w-[170px]">
+                    {team1Name} (Blue)
                   </h3>
                   <span className="text-[10px] font-black text-slate-500 uppercase tracking-wider">
                     Keys: 1, 2, 3, 4
@@ -108,7 +110,7 @@ export default function DualTeamArena({
                 </span>
               ) : isTeam2First ? (
                 <span className="px-3 py-1 rounded-xl text-[11px] font-black bg-slate-100 text-slate-500 border border-black">
-                  Team 2 was faster
+                  {team2Name} was faster
                 </span>
               ) : (
                 <span className="px-3 py-1 rounded-xl text-[11px] font-black bg-black text-white border border-black animate-pulse">
@@ -193,8 +195,8 @@ export default function DualTeamArena({
                   T2
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-black">
-                    Team 2 (Red Window)
+                  <h3 className="text-sm font-black text-black truncate max-w-[170px]">
+                    {team2Name} (Red)
                   </h3>
                   <span className="text-[10px] font-black text-slate-500 uppercase tracking-wider">
                     Keys: 7, 8, 9, 0
@@ -218,7 +220,7 @@ export default function DualTeamArena({
                 </span>
               ) : isTeam1First ? (
                 <span className="px-3 py-1 rounded-xl text-[11px] font-black bg-slate-100 text-slate-500 border border-black">
-                  Team 1 was faster
+                  {team1Name} was faster
                 </span>
               ) : (
                 <span className="px-3 py-1 rounded-xl text-[11px] font-black bg-black text-white border border-black animate-pulse">

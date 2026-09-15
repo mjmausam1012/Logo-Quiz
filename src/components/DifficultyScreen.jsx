@@ -1,16 +1,14 @@
 import React from 'react';
 import { ArrowLeft, Volume2, VolumeX, Backpack, BookOpen, Rocket, Sparkles } from 'lucide-react';
 import startBottomImg from '../assets/start-bottom.png';
+import TopLogoBanner from './TopLogoBanner';
 
 /**
  * DifficultyScreen matching the reference image:
- * - Top logo banner: start-bottom.png flipped vertically (scale-y-[-1])
+ * - Top logo banner: TopLogoBanner with nebuloid-logo.png and background over start-bottom.png
  * - Bottom logo banner: start-bottom.png anchored to bottom edge
  * - Cream background (#FEF5E6)
- * - Heading: "CHOOSE DIFFICULTY" in high-contrast bold italic serif with 3D drop-shadow
- * - 3 Cards side-by-side: EASY (backpack), MEDIUM (book), HARD (rocket)
- * - Gradient styling on cards: golden caramel amber transitioning to rich dark chocolate maroon
- * - Navigation: sleek Back and Sound toggle buttons in dark maroon pill style
+ * - 3 Cards side-by-side: EASY, MEDIUM, HARD
  */
 export default function DifficultyScreen({
   onSelectDifficulty,
@@ -51,15 +49,8 @@ export default function DifficultyScreen({
   return (
     <div className="relative w-full min-h-screen bg-[#FEF5E6] text-black flex flex-col justify-between items-center overflow-hidden select-none">
       
-      {/* ================= TOP LOGO BANNER ================= */}
-      <div className="w-full pointer-events-none z-10 overflow-hidden leading-none shrink-0">
-        <img
-          src={startBottomImg}
-          alt="Logo Banner Top"
-          className="w-full h-14 sm:h-20 md:h-24 lg:h-28 object-cover object-bottom select-none block"
-          style={{ transform: 'scaleY(-1)' }}
-        />
-      </div>
+      {/* ================= TOP LOGO BANNER WITH NEBULOID LOGO ================= */}
+      <TopLogoBanner />
 
       {/* ================= MAIN CONTENT AREA ================= */}
       <div className="w-full max-w-5xl mx-auto flex-1 flex flex-col justify-center items-center px-4 sm:px-8 py-2 z-20 relative my-auto">
@@ -86,7 +77,7 @@ export default function DifficultyScreen({
         </div>
 
         {/* Title Header */}
-        <h1 className="font-logo-title italic text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-[#4A1513] title-3d-shadow tracking-tight text-center leading-none mt-1 mb-6 sm:mb-8 md:mb-10">
+        <h1 className="font-logo-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-[#4A1513] title-3d-shadow tracking-tight text-center leading-none mt-1 mb-6 sm:mb-8 md:mb-10">
           CHOOSE DIFFICULTY
         </h1>
 
@@ -111,7 +102,7 @@ export default function DifficultyScreen({
 
               {/* Middle Section: Title & Subtitle */}
               <div className="flex flex-col items-center justify-center my-auto">
-                <h2 className="text-2xl sm:text-3xl font-black italic text-white tracking-wide uppercase transition-transform group-hover:scale-105 duration-200">
+                <h2 className="text-2xl sm:text-3xl font-black text-white tracking-wide uppercase transition-transform group-hover:scale-105 duration-200">
                   {level.title}
                 </h2>
 

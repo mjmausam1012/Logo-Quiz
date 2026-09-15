@@ -11,6 +11,8 @@ export default function RobotDuelArena({
   userScore = 0,
   robotScore = 0,
   robotCountdown = 5,
+  playerName = "You",
+  robotName = "Robo AI",
   firstResponder = null, // null | 'user' | 'robot'
   userSelected = null,
   robotAnswer = null,
@@ -43,7 +45,7 @@ export default function RobotDuelArena({
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-full bg-indigo-600 animate-ping" />
           <span className="text-xs font-black tracking-wider uppercase">
-            You: <strong className="font-mono text-sm">{userScore}</strong> / 10
+            {playerName}: <strong className="font-mono text-sm">{userScore}</strong> / 10
           </span>
         </div>
 
@@ -57,7 +59,7 @@ export default function RobotDuelArena({
 
         <div className="flex items-center gap-2">
           <span className="text-xs font-black tracking-wider uppercase">
-            Robot: <strong className="font-mono text-sm">{robotScore}</strong> /
+            {robotName}: <strong className="font-mono text-sm">{robotScore}</strong> /
             10
           </span>
           <span className="w-3 h-3 rounded-full bg-purple-600 animate-ping" />
@@ -86,8 +88,8 @@ export default function RobotDuelArena({
                   <User className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-black">
-                    Your Question Window
+                  <h3 className="text-sm font-black text-black truncate max-w-[170px]">
+                    {playerName} (Your Window)
                   </h3>
                   <span className="text-[10px] font-black text-slate-500 uppercase tracking-wider">
                     Answer before Robot scans!
@@ -111,7 +113,7 @@ export default function RobotDuelArena({
                 </span>
               ) : isRobotFirst ? (
                 <span className="px-3 py-1 rounded-xl text-[11px] font-black bg-slate-100 text-slate-500 border border-black">
-                  Robot was faster!
+                  {robotName} was faster!
                 </span>
               ) : (
                 <span className="px-3 py-1 rounded-xl text-[11px] font-black bg-black text-white border border-black animate-pulse">
@@ -221,7 +223,7 @@ export default function RobotDuelArena({
                 </span>
               ) : isUserFirst ? (
                 <span className="px-3 py-1 rounded-xl text-[11px] font-black bg-slate-100 text-slate-500 border border-black">
-                  User was faster!
+                  {playerName} was faster!
                 </span>
               ) : (
                 <div className="flex items-center gap-1.5 px-3 py-1 rounded-2xl bg-black text-white font-mono font-black text-xs border border-black">

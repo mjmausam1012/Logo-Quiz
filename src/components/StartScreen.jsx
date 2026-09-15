@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
-import startBottomImg from '../assets/start-bottom.png';
-import nebuloidLogo from '../assets/nebuloid-logo-cropped.png';
+import React, { useState } from "react";
+import { ArrowLeft } from "lucide-react";
+import startBottomImg from "../assets/start-bottom.png";
+import nebuloidLogo from "../assets/nebuloid-logo-cropped.png";
+import TopLogoBanner from "./TopLogoBanner";
 
 /**
  * StartScreen matching the official reference image design:
- * - Top banner: start-bottom.png flipped vertically (scale-y-[-1])
+ * - Top banner: TopLogoBanner with start-bottom.png and nebuloid-logo.png overlay
  * - Bottom banner: start-bottom.png anchored to bottom edge
  * - Cream background (#FEF5E6)
  * - "WELCOME TO" subtitle + "LOGO QUIZ" in bold italic high-contrast serif
@@ -24,27 +25,17 @@ export default function StartScreen({
 
   return (
     <div className="relative w-full min-h-screen bg-[#FEF5E6] text-black flex flex-col justify-between items-center overflow-hidden select-none">
-      
-      {/* ================= TOP LOGO BANNER ================= */}
-      {/* Flipped vertically (scaleY: -1) to preserve exact logo positions as in reference */}
-      <div className="w-full pointer-events-none z-10 overflow-hidden leading-none shrink-0">
-        <img
-          src={startBottomImg}
-          alt="Logo Banner Top"
-          className="w-full h-14 sm:h-20 md:h-24 lg:h-28 object-cover object-bottom select-none block"
-          style={{ transform: 'scaleY(-1)' }}
-        />
-      </div>
+      {/* ================= TOP LOGO BANNER WITH NEBULOID LOGO ================= */}
+      <TopLogoBanner />
 
       {/* ================= MAIN CONTENT AREA ================= */}
       <div className="w-full max-w-6xl mx-auto flex-1 flex flex-col justify-center items-center px-4 sm:px-8 py-2 sm:py-4 z-20 relative">
-        
         {/* Title Header */}
         <div className="text-center flex flex-col items-center justify-center mb-6 sm:mb-8 md:mb-10">
           <span className="text-[11px] sm:text-xs md:text-sm font-black tracking-[0.42em] sm:tracking-[0.48em] text-[#4A1513] uppercase block pl-1">
             W E L C O M E &nbsp; T O
           </span>
-          
+
           <h1 className="font-logo-title italic text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#4A1513] title-3d-shadow tracking-normal leading-none mt-2 sm:mt-3">
             LOGO QUIZ
           </h1>
@@ -52,23 +43,14 @@ export default function StartScreen({
 
         {/* Action Controls: Left Pills - Center Big Circle - Right Pills */}
         <div className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 md:gap-4 my-auto">
-          
           {/* Left Action Buttons */}
           <div className="flex flex-col gap-3.5 sm:gap-4 w-44 sm:w-48 md:w-52 shrink-0 items-center md:items-start order-2 md:order-1">
             <button
-              onClick={() => setShowCertificates(true)}
+              onClick={onToggleSound}
               type="button"
               className="w-full py-2.5 sm:py-3 px-6 rounded-full bg-[#501010] hover:bg-[#681818] active:scale-95 text-white font-sans font-semibold text-sm sm:text-base tracking-wide shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer text-center"
             >
-              Certificates
-            </button>
-
-            <button
-              onClick={() => setShowHowToPlay(true)}
-              type="button"
-              className="w-full py-2.5 sm:py-3 px-6 rounded-full bg-[#501010] hover:bg-[#681818] active:scale-95 text-white font-sans font-semibold text-sm sm:text-base tracking-wide shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer text-center"
-            >
-              How To Play
+              {soundEnabled ? "Sound On" : "Sound Off"}
             </button>
           </div>
 
@@ -76,7 +58,6 @@ export default function StartScreen({
           <div className="relative flex items-center justify-center shrink-0 order-1 md:order-2 my-2 md:my-0">
             {/* Outer Container with Fixed Aspect Ratio */}
             <div className="relative w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 flex items-center justify-center">
-              
               {/* Outer Orbital Ring & Curved Brackets SVG Overlay */}
               <svg
                 viewBox="0 0 340 340"
@@ -119,7 +100,8 @@ export default function StartScreen({
                 type="button"
                 className="group relative w-[78%] h-[78%] rounded-full cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center z-20 animate-halo-pulse focus:outline-none"
                 style={{
-                  background: 'radial-gradient(circle at 50% 48%, #FCC474 0%, #F5AB41 55%, #DF8A18 100%)',
+                  background:
+                    "radial-gradient(circle at 50% 48%, #FCC474 0%, #F5AB41 55%, #DF8A18 100%)",
                 }}
                 aria-label="Start Game"
               >
@@ -137,14 +119,6 @@ export default function StartScreen({
           {/* Right Action Buttons */}
           <div className="flex flex-col gap-3.5 sm:gap-4 w-44 sm:w-48 md:w-52 shrink-0 items-center md:items-end order-3">
             <button
-              onClick={onToggleSound}
-              type="button"
-              className="w-full py-2.5 sm:py-3 px-6 rounded-full bg-[#501010] hover:bg-[#681818] active:scale-95 text-white font-sans font-semibold text-sm sm:text-base tracking-wide shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer text-center"
-            >
-              {soundEnabled ? 'Sound On' : 'Sound Off'}
-            </button>
-
-            <button
               onClick={() => setShowHowToPlay(true)}
               type="button"
               className="w-full py-2.5 sm:py-3 px-6 rounded-full bg-[#501010] hover:bg-[#681818] active:scale-95 text-white font-sans font-semibold text-sm sm:text-base tracking-wide shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer text-center"
@@ -152,7 +126,6 @@ export default function StartScreen({
               How To Play
             </button>
           </div>
-
         </div>
       </div>
 
@@ -187,7 +160,8 @@ export default function StartScreen({
                     Choose Game Mode
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-700 font-medium mt-0.5">
-                    Play Solo in Self Mode, duel in Team vs Team (2 Windows), or battle Robot AI.
+                    Play Solo in Self Mode, duel in Team vs Team (2 Windows), or
+                    battle Robot AI.
                   </p>
                 </div>
               </div>
@@ -201,7 +175,8 @@ export default function StartScreen({
                     Select Difficulty
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-700 font-medium mt-0.5">
-                    Choose from Easy (10 pts), Medium (20 pts), or Hard (30 pts) visual challenges.
+                    Choose from Easy (10 pts), Medium (20 pts), or Hard (30 pts)
+                    visual challenges.
                   </p>
                 </div>
               </div>
@@ -215,7 +190,8 @@ export default function StartScreen({
                     Identify The Logo
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-700 font-medium mt-0.5">
-                    Recognize distorted brands using keyboard (1-4 / A-D) or mouse click.
+                    Recognize distorted brands using keyboard (1-4 / A-D) or
+                    mouse click.
                   </p>
                 </div>
               </div>
@@ -229,7 +205,8 @@ export default function StartScreen({
                     Win and Get Certified
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-700 font-medium mt-0.5">
-                    Score points fast to win matches and unlock your personalized certificate.
+                    Score points fast to win matches and unlock your
+                    personalized certificate.
                   </p>
                 </div>
               </div>
@@ -279,7 +256,8 @@ export default function StartScreen({
                 </h3>
 
                 <p className="text-xs text-slate-700 font-medium max-w-md mx-auto mt-1">
-                  Awarded for demonstrating visual acuity and rapid brand logo recognition across all difficulty tiers.
+                  Awarded for demonstrating visual acuity and rapid brand logo
+                  recognition across all difficulty tiers.
                 </p>
 
                 <div className="w-full grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-[#501010]/20">
@@ -306,7 +284,11 @@ export default function StartScreen({
                       Rank
                     </span>
                     <span className="text-xs sm:text-sm font-bold text-[#501010] mt-1 block truncate">
-                      {bestScore >= 200 ? '⭐ Master' : bestScore >= 100 ? '🎯 Pro' : '💡 Contender'}
+                      {bestScore >= 200
+                        ? "⭐ Master"
+                        : bestScore >= 100
+                          ? "🎯 Pro"
+                          : "💡 Contender"}
                     </span>
                   </div>
                 </div>
@@ -331,7 +313,6 @@ export default function StartScreen({
           </div>
         </div>
       )}
-
     </div>
   );
 }
